@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Blog Posts</h1>
+
+{% for blog in blogs %}
+
+    <h2><a href="/blog?id={{blog.id}}" name="blog_title" value="{{blog.title}}">{{blog.title}}</a></h2>
+    <h4 name="blog_body" value="{{blog.body}}">{{blog.body}}</h4>
+
+    <input type="hidden" name="id" value="{{blog.id}}"/>
+    <hr />
+{% endfor %}
+
+{% endblock %}

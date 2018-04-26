@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{{title}}</title>
+        <style>
+            .error {
+                color: red;
+            }
+        </style>
+        <a href="/">Main Blog Page</a> 
+        <a href="/newpost">Add a blog entry</a>
+        <a href='/blog'>All Blogs</a>
+        <a href="/logout">logout</a>
+
+    </head>
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    
+    {% for category,message in messages %}
+        <p class="{{category}}">{{message}}</p>
+    {% endfor %}
+    
+{% endwith %}
+{% block content %}
+{% endblock %}
+
