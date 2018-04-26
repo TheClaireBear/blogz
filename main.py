@@ -7,10 +7,10 @@ db_pass = 'password'
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:meow@localhost:8889/blogz'
+app.config['SQLALCHEMY_DATABASE_URI'] = ''
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
-app.secret_key = 'meows'
+app.secret_key = ''
 
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
