@@ -1,5 +1,10 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
+
+db_name = 'blogs'
+db_user = 'blogs'
+db_pass = 'passwords'
+
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
