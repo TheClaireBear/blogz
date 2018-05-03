@@ -35,6 +35,42 @@ class User(db.Model):
         self.username = username
         self.password = password
 
+    def __repr__(self):
+        return self.username
+
+def validate_username(username):
+    if len(username) >= 3 and len(username) < 20:
+        if " " not in username:
+            return False
+        else:
+            username_error = True
+            flash('Spaces are not allowed in username!', 'error')
+            username = ''
+            return username_error
+    else:
+        username_error = True
+        flash('Username must be between 3 and 20 characters long!', 'error')
+        username = ""
+        return username_error
+
+def validate_password(password, verify):
+    if len(password) >= 3 and len(password) <= 20:
+        if " " not in password:
+            if password == verify:
+                return False
+            else:
+                password_error = True
+                flash('Passwords do not match!', 'error')
+                return password_error
+        else:
+            password_error = True
+            flash('Spaces are not allowed in password!', 'error')
+            return password_error
+    else:
+        password_error = True
+        flash('Password must be between 3 and 20 characters long!', 'error')
+        return password_error
+
 @app.before_request
 def require_login():
     allowed_routes = ['login', 'signup', 'blog', 'index']
@@ -57,22 +93,26 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/signup', methods=['POST', 'GET'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
-
         existing_user = User.query.filter_by(username=username).first()
-        if not existing_user:
-            new_user = User(username, password)
-            db.session.add(new_user)
-            db.session.commit()
-            session['username'] = username
-            return redirect('/')
-        else:
-            return "<h1>Duplicate user</h1>"
+
+        username_error = validate_username(username)
+        password_error = validate_password(password, verify)
+
+        if not username_error and not password_error:
+            if not existing_user:
+                new_user = User(username, password)
+                db.session.add(new_user)
+                db.session.commit()
+                session['username'] = username
+                return redirect('/newpost')
+            else:
+                flash('This user already exists', 'error')
 
     return render_template('signup.html')
 
